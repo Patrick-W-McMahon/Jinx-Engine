@@ -1,0 +1,3 @@
+[submodule "libs/ObjectiveJS"]
+	path = libs/ObjectiveJS
+	url = git://github.com/Patrick-W-McMahon/ObjectiveJS
