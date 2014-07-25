@@ -259,6 +259,8 @@ function GameEngine(){
 				this.objects[x].draw(this.display);
 			}else if(typeof(this.objects[x].paint)==='function'){
 				this.objects[x].paint(this.display);
+			}else if(typeof(this.objects[x].render)==='function'){
+				this.objects[x].render(this.display);
 			}
 		}
 	}
