@@ -1,0 +1,6 @@
+function Scene(){
+  this.objects=[];
+  
+
+
+};
