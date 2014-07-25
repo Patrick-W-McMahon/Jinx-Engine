@@ -23,5 +23,9 @@ function Camera(canvas){
 		context.stroke();
 		context.restore();
   }
+  
+  this.getObjectType = function(){
+  	return "camera";
+  }
 
 };
