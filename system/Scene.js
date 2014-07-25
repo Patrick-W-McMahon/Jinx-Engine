@@ -7,7 +7,7 @@ function Scene(){
 		this.gameEngine = e;
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].init)==='function'){
-				this.objects[x].init(gameEngineThis);
+				this.objects[x].init(this.gameEngine);
 			}
 		}
 		this.updateCameraList();
