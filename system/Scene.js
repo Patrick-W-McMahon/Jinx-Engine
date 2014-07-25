@@ -1,8 +1,10 @@
 function Scene(){
   this.objects=[];
   this.cameraList=[];
+  this.gameEngine;
   
-	this.init = function(){
+	this.init = function(e){
+		this.gameEngine = e;
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].init)==='function'){
 				this.objects[x].init(gameEngineThis);
@@ -12,7 +14,7 @@ function Scene(){
 	}
 
   this.update = function(){
-    
+
   }
   
   this.render = function(g){
