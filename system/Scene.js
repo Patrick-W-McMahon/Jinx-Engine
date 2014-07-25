@@ -14,7 +14,23 @@ function Scene(){
 	}
 
 	this.update = function(){
-	
+		for(var x=0;x<this.objects.length;x++){
+			if(typeof(this.objects[x].update)==='function'){
+				this.objects[x].update();
+			}
+			if(this.gameEngine.inputActions()){
+				if(typeof(this.objects[x].input)==='function'){
+					this.objects[x].input(this.gameEngine.keysDown,this.gameEngine.keysPressed,this.gameEngine.keysUp);
+				}
+			}
+			this.gameEngine.engineLog("Event Stack Length: "+this.gameEngine.eventStack.length);
+			if(this.gameEngine.eventStack.length>0){
+				if(typeof(this.objects[x].EventLisener)==='function'){
+					this.objects[x].EventLisener(this.gameEngine.eventStack);
+				}
+			}
+		}
+		this.gameEngine.clearKeys();	
 	}
 	
 	this.render = function(g){
