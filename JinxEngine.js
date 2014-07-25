@@ -15,6 +15,7 @@ function GameEngine(){
 	this.frameCount=0;
 	this.eventStack=[];
 	this.eventStackIndex=0;
+	this.activeScene;
 	
 	this.init = function(){
 		for(var x=0;x<this.objects.length;x++){
@@ -158,6 +159,12 @@ function GameEngine(){
 		
 	};
 	
+	this.setScene = function(sceneObject){
+		this.activeScene.destroy();
+		this.activeScene=sceneObject;
+		this.activeScene.init();
+	};
+	
 	this.getDisplayPixelDensity = function(canvas,context){
 		var ratio = 1;
 		if(context.webkitBackingStorePixelRatio < 2){
@@ -284,7 +291,9 @@ function GameEngine(){
 	
 	this.frame = function(){
 		gameEngineThis.frameCount++;
-		gameEngineThis.update();	
+		this.activeScene.update();
+		gameEngineThis.update();
+		this.activeScene.render(gameEngineThis.display);
 		gameEngineThis.render(gameEngineThis.display);
 		if(gameEngineThis.loopState){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
