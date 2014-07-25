@@ -40,5 +40,13 @@ function Scene(){
 			}
 		}
 	}
+	
+	this.destroy = function(){
+		for(var x=0;x<this.objects.length;x++){
+			if(typeof(this.objects[x].destroy)==='function'){
+				this.objects[x].destroy();	
+			}
+		}
+	}
 
 };
