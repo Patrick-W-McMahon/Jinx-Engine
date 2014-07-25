@@ -192,7 +192,7 @@ function GameEngine(){
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
 		this.display = document.getElementById(canvas).getContext(this.context);
-		this.getDisplayPixelDensity(canvas,this.display);
+		//this.getDisplayPixelDensity(canvas,this.display);
 
 	}
 	
@@ -292,9 +292,13 @@ function GameEngine(){
 	
 	this.frame = function(){
 		gameEngineThis.frameCount++;
-		this.activeScene.update();
+		if(typeof(this.activeScene)==='function'){
+			this.activeScene.update();
+		}
 		gameEngineThis.update();
-		this.activeScene.render(gameEngineThis.display);
+		if(typeof(this.activeScene)==='function'){
+			this.activeScene.render(gameEngineThis.display);
+		}
 		gameEngineThis.render(gameEngineThis.display);
 		if(gameEngineThis.loopState){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
