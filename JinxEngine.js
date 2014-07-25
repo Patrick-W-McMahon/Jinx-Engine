@@ -43,6 +43,7 @@ function GameEngine(){
 				}
 			}
 		}
+		
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].update)==='function'){
 				this.objects[x].update();
