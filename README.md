@@ -1,4 +1,4 @@
 Jinx-Engine
 ===========
 
-JavaScript Game Engine
+JavaScript Game Engine / Infographic Engine
