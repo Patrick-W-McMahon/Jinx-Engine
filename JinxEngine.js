@@ -16,6 +16,7 @@ function GameEngine(){
 	this.eventStack=[];
 	this.eventStackIndex=0;
 	this.activeScene;
+	this.mousePos={x:0,y:0};
 	
 	this.init = function(){
 		for(var x=0;x<this.objects.length;x++){
@@ -23,6 +24,18 @@ function GameEngine(){
 				this.objects[x].init(gameEngineThis);
 			}
 		}
+		this.displayDomId.addEventListener('mousemove', function(e){
+			gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
+		},false);
+
+	}
+	
+	this.MousePositionToScreen = function(elm,evt){
+		var rect = this.displayDomId.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
 	}
 	
 	this.update = function(){
@@ -61,6 +74,24 @@ function GameEngine(){
 			}
 		}
 		this.clearKeys();
+	}
+	
+	this.getMouse = function(v){
+		if(v==undefined){
+			return this.mousePos;
+		}else{
+			switch(v){
+				case 'x':
+					return this.mousePos.x;
+				break;
+				case 'y':
+					return this.mousePos.y;
+				break;
+				default:
+					return this.mousePos;
+				break;
+			}
+		}
 	}
 	
 	this.Event = function(){
@@ -160,6 +191,8 @@ function GameEngine(){
 		
 	};
 	
+	
+	
 	this.setScene = function(sceneObject){
 		this.activeScene.destroy();
 		this.activeScene=sceneObject;
@@ -189,8 +222,29 @@ function GameEngine(){
 		//return window.devicePixelRatio;
 	}
 	
+	this.getPixelRatio = function () {
+		var ctx = document.createElement("canvas").getContext("2d"),
+			dpr = window.devicePixelRatio || 1,
+			bsr = ctx.webkitBackingStorePixelRatio ||
+				  ctx.mozBackingStorePixelRatio ||
+				  ctx.msBackingStorePixelRatio ||
+				  ctx.oBackingStorePixelRatio ||
+				  ctx.backingStorePixelRatio || 1;
+
+		return dpr / bsr;
+	};
+	
+	
+	
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
+		var ratio = this.getPixelRatio();
+		var w = this.displayDomId.width;
+		var h = this.displayDomId.height;
+		this.displayDomId.width = w*ratio;
+		this.displayDomId.height = h*ratio;
+		this.displayDomId.style.width = w+"px";
+		this.displayDomId.style.height = h+"px";
 		this.display = document.getElementById(canvas).getContext(this.context);
 		//this.getDisplayPixelDensity(canvas,this.display);
 
@@ -292,13 +346,9 @@ function GameEngine(){
 	
 	this.frame = function(){
 		gameEngineThis.frameCount++;
-		if(typeof(this.activeScene)==='function'){
-			this.activeScene.update();
-		}
+		//this.activeScene.update();
 		gameEngineThis.update();
-		if(typeof(this.activeScene)==='function'){
-			this.activeScene.render(gameEngineThis.display);
-		}
+		//this.activeScene.render(gameEngineThis.display);
 		gameEngineThis.render(gameEngineThis.display);
 		if(gameEngineThis.loopState){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
