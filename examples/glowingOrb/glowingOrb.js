@@ -6,10 +6,11 @@ myDom.OnReady(function(){
 	myEngine.setDisplay("screen");
 	myDom.getId("newGameButton").addEventListener("click", function(){
 		myEngine.stop();
-		var hudId = myEngine.addObject(new HUD());
-		var playerOneId = myEngine.addObject(new Player("left","red","Player One"));
-		var playerTwoId = myEngine.addObject(new Player("right","blue","Player Two"));
-		var ballId = myEngine.addObject(new Ball());
+		var particalId = myEngine.addObject(new Partical());
+		//var hudId = myEngine.addObject(new HUD());
+		//var playerOneId = myEngine.addObject(new Player("left","red","Player One"));
+		//var playerTwoId = myEngine.addObject(new Player("right","blue","Player Two"));
+		//var ballId = myEngine.addObject(new Ball());
 		myEngine.init();
 		myEngine.start();
 	}, false);

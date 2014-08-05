@@ -1,4 +1,4 @@
-function Ball(){
+function Partical(){
 	var gameEngine;
 	this.radius=2;
 	var x;
