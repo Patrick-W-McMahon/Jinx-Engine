@@ -1,6 +1,6 @@
 function Ball(){
 	var gameEngine;
-	this.radius=2;
+	this.radius=8;
 	var x;
 	var y;
 	var direction;

@@ -31,15 +31,15 @@ function HUD(){
 	
 	this.draw = function(g){
 		g.fillStyle = "black";
-		g.font="12px Verdana";
+		g.font="24px Verdana";
 		if(this.gameEngine.frameCount<100){
 			g.fillText("Ready ",this.gameEngine.getDisplayWidth()/2,this.gameEngine.getDisplayHeight()/2);
 		}else if(this.gameEngine.frameCount>100&&this.gameEngine.frameCount<130){
 			g.fillText("GO!! ",this.gameEngine.getDisplayWidth()/2,this.gameEngine.getDisplayHeight()/2);
 		}else{
-			g.font="8px Verdana";
-			g.fillText(""+this.playerOneScore,10,10);
-			g.fillText(""+this.playerTwoScore,this.gameEngine.getDisplayWidth()-15,9);
+			g.font="20px Verdana";
+			g.fillText(""+this.playerOneScore,10,18);
+			g.fillText(""+this.playerTwoScore,this.gameEngine.getDisplayWidth()-15,18);
 		}
 		
 	}

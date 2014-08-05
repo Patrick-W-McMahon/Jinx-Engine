@@ -5,9 +5,9 @@ function Player(s,c,n){
 	this.name=n;
 	this.type;
 	this.count=50;
-	this.defaultPaddleLength=20;
+	this.defaultPaddleLength=50;
 	this.paddleLength=this.defaultPaddleLength;
-	this.paddleThickness=4;
+	this.paddleThickness=8;
 	this.x;
 	this.y=10;
 	this.speed=2;
