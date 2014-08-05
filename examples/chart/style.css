@@ -1,0 +1,26 @@
+html,body{
+  background:black;
+  color:white;
+  padding:0px auto 0px auto;
+  margin:0px;
+}
+
+h1{
+	position:fixed;
+	top:0px;
+	left:0px;
+	font-size:12p;
+	padding:0px;
+	margin:0px;
+}
+
+canvas{
+	background:white;
+	margin:40px 20px 0px 20px;
+}
+
+nav{
+	position:fixed;
+	top:0px;
+	right:0px;
+}
