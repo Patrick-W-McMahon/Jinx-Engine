@@ -198,7 +198,7 @@ function GameEngine(){
 		this.activeScene=sceneObject;
 		this.activeScene.init();
 	};
-	
+	/*
 	this.getDisplayPixelDensity = function(canvas,context){
 		var ratio = 1;
 		if(context.webkitBackingStorePixelRatio < 2){
@@ -221,16 +221,15 @@ function GameEngine(){
   		
 		//return window.devicePixelRatio;
 	}
-	
+	*/
 	this.getPixelRatio = function () {
 		var ctx = document.createElement("canvas").getContext("2d"),
-			dpr = window.devicePixelRatio || 1,
-			bsr = ctx.webkitBackingStorePixelRatio ||
-				  ctx.mozBackingStorePixelRatio ||
-				  ctx.msBackingStorePixelRatio ||
-				  ctx.oBackingStorePixelRatio ||
-				  ctx.backingStorePixelRatio || 1;
-
+		dpr = window.devicePixelRatio || 1,
+		bsr = ctx.webkitBackingStorePixelRatio ||
+			  ctx.mozBackingStorePixelRatio ||
+			  ctx.msBackingStorePixelRatio ||
+			  ctx.oBackingStorePixelRatio ||
+			  ctx.backingStorePixelRatio || 1;
 		return dpr / bsr;
 	};
 	
