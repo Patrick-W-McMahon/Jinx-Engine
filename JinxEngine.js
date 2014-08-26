@@ -27,15 +27,14 @@ function GameEngine(){
 		this.displayDomId.addEventListener('mousemove', function(e){
 			gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
 		},false);
-
 	}
 	
 	this.MousePositionToScreen = function(elm,evt){
 		var rect = this.displayDomId.getBoundingClientRect();
-        return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-        };
+	        return {
+	          x: evt.clientX - rect.left,
+	          y: evt.clientY - rect.top
+	        };
 	}
 	
 	this.update = function(){
@@ -188,10 +187,7 @@ function GameEngine(){
 				gameEngineThis.keysDown.push(e.keyCode);
 			}
 		}
-		
 	};
-	
-	
 	
 	this.setScene = function(sceneObject){
 		this.activeScene.destroy();
@@ -232,8 +228,6 @@ function GameEngine(){
 			  ctx.backingStorePixelRatio || 1;
 		return dpr / bsr;
 	};
-	
-	
 	
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
@@ -353,5 +347,4 @@ function GameEngine(){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
 		}
 	}
-	
 };
