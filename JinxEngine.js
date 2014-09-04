@@ -17,6 +17,7 @@ function GameEngine(){
 	this.eventStackIndex=0;
 	this.activeScene;
 	this.mousePos={x:0,y:0};
+	this.overrideScreenSizeAjustment=0;
 	
 	this.init = function(){
 		for(var x=0;x<this.objects.length;x++){
@@ -229,6 +230,10 @@ function GameEngine(){
 		return dpr / bsr;
 	};
 	
+	this.overrideScreenResizer = function(){
+		this.overrideScreenSizeAjustment=1;
+	}
+	
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
 		var ratio = this.getPixelRatio();
@@ -236,8 +241,10 @@ function GameEngine(){
 		var h = this.displayDomId.height;
 		this.displayDomId.width = w*ratio;
 		this.displayDomId.height = h*ratio;
-		this.displayDomId.style.width = w+"px";
-		this.displayDomId.style.height = h+"px";
+		if(!this.overrideScreenSizeAjustment){
+			this.displayDomId.style.width = w+"px";
+			this.displayDomId.style.height = h+"px";
+		}
 		this.display = document.getElementById(canvas).getContext(this.context);
 		//this.getDisplayPixelDensity(canvas,this.display);
 
