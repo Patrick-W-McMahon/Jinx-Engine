@@ -17,25 +17,39 @@ function GameEngine(){
 	this.eventStackIndex=0;
 	this.activeScene;
 	this.mousePos={x:0,y:0};
-	this.overrideScreenSizeAjustment=0;
 	
 	this.init = function(){
+		window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].init)==='function'){
 				this.objects[x].init(gameEngineThis);
 			}
 		}
-		this.displayDomId.addEventListener('mousemove', function(e){
-			gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
-		},false);
+		try{//FF,webkit,opera,IE>8
+			this.displayDomId.addEventListener('mousemove', function(e){
+				gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
+			},false);
+		}catch(e){//IE>6
+			document.attachEvent('onmousemove',function(e){
+				gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
+			});
+		}finally{//unsupported browsers
+			try{
+				document.onmousemove = function(){};
+			}catch(die){
+				alert('Use a decent browser.');
+				location.href = 'http://www.mosilla.org/en-US/firefox/new/';
+			}
+		}
+
 	}
 	
 	this.MousePositionToScreen = function(elm,evt){
 		var rect = this.displayDomId.getBoundingClientRect();
-	        return {
-	          x: evt.clientX - rect.left,
-	          y: evt.clientY - rect.top
-	        };
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
 	}
 	
 	this.update = function(){
@@ -188,14 +202,17 @@ function GameEngine(){
 				gameEngineThis.keysDown.push(e.keyCode);
 			}
 		}
+		
 	};
+	
+	
 	
 	this.setScene = function(sceneObject){
 		this.activeScene.destroy();
 		this.activeScene=sceneObject;
 		this.activeScene.init();
 	};
-	/*
+	
 	this.getDisplayPixelDensity = function(canvas,context){
 		var ratio = 1;
 		if(context.webkitBackingStorePixelRatio < 2){
@@ -218,21 +235,20 @@ function GameEngine(){
   		
 		//return window.devicePixelRatio;
 	}
-	*/
+	
 	this.getPixelRatio = function () {
 		var ctx = document.createElement("canvas").getContext("2d"),
-		dpr = window.devicePixelRatio || 1,
-		bsr = ctx.webkitBackingStorePixelRatio ||
-			  ctx.mozBackingStorePixelRatio ||
-			  ctx.msBackingStorePixelRatio ||
-			  ctx.oBackingStorePixelRatio ||
-			  ctx.backingStorePixelRatio || 1;
+			dpr = window.devicePixelRatio || 1,
+			bsr = ctx.webkitBackingStorePixelRatio ||
+				  ctx.mozBackingStorePixelRatio ||
+				  ctx.msBackingStorePixelRatio ||
+				  ctx.oBackingStorePixelRatio ||
+				  ctx.backingStorePixelRatio || 1;
+
 		return dpr / bsr;
 	};
 	
-	this.overrideScreenResizer = function(){
-		this.overrideScreenSizeAjustment=1;
-	}
+	
 	
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
@@ -241,10 +257,8 @@ function GameEngine(){
 		var h = this.displayDomId.height;
 		this.displayDomId.width = w*ratio;
 		this.displayDomId.height = h*ratio;
-		if(!this.overrideScreenSizeAjustment){
-			this.displayDomId.style.width = w+"px";
-			this.displayDomId.style.height = h+"px";
-		}
+		this.displayDomId.style.width = w+"px";
+		this.displayDomId.style.height = h+"px";
 		this.display = document.getElementById(canvas).getContext(this.context);
 		//this.getDisplayPixelDensity(canvas,this.display);
 
@@ -354,4 +368,5 @@ function GameEngine(){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
 		}
 	}
+	
 };
