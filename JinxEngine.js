@@ -8,9 +8,10 @@ function GameEngine(){
 	gameEngineThis = this;
 	this.displayDomId;
 	this.requestID;
-	this.keysDown=[];
-	this.keysUp=[];
-	this.keysPressed=[];
+	this.keys=[];
+	this.keysDown=[];//future depracation
+	this.keysUp=[];//future depracation
+	this.keysPressed=[];//future depracation
 	this.engineMode="live";
 	this.frameCount=0;
 	this.eventStack=[];
@@ -47,10 +48,10 @@ function GameEngine(){
 	
 	this.MousePositionToScreen = function(elm,evt){
 		var rect = this.displayDomId.getBoundingClientRect();
-        return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-        };
+	        return {
+	          x: evt.clientX - rect.left,
+	          y: evt.clientY - rect.top
+	        };
 	}
 	
 	this.update = function(){
@@ -78,7 +79,8 @@ function GameEngine(){
 			}
 			if(this.inputActions()){
 				if(typeof(this.objects[x].input)==='function'){
-					this.objects[x].input(this.keysDown,this.keysPressed,this.keysUp);
+					//this.objects[x].input(this.keysDown,this.keysPressed,this.keysUp);
+					this.objects[x].input(this.keys);
 				}
 			}
 			gameEngineThis.engineLog("Event Stack Length: "+this.eventStack.length);
@@ -181,19 +183,34 @@ function GameEngine(){
 	}
 	
 	this.inputActions = function(){
+		return true;//this will be fixed later this is temp
+	}
+	
+	/* old copy
+	this.inputActions = function(){
 		if(this.keysDown.length>0||this.keysPressed.length>0||this.keysUp.length>0){
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
+	*/
+	/*
 	this.clearKeys = function(){
 		this.keysDown.clear();
 		this.keysPressed.clear();
 		this.keysUp.clear();
 	}
+	*/
 	
+	document.addEventListener("keydown", function (e) {
+    		keys[e.keyCode] = true;
+	});
+	document.addEventListener("keyup", function (e) {
+    		keys[e.keyCode] = false;
+	});
+	
+	/*
 	window.onkeydown = function(e){
 		if(gameEngineThis.loopState){
 			gameEngineThis.engineLog("Key Down "+e.keyCode);
@@ -205,7 +222,7 @@ function GameEngine(){
 		}
 		
 	};
-	
+	*/
 	
 	
 	this.setScene = function(sceneObject){
@@ -217,7 +234,7 @@ function GameEngine(){
 	this.overrideScreenResizer = function(){
 		this.overrideScreenSizeAjustment=1;
 	}
-	
+	/*
 	this.getDisplayPixelDensity = function(canvas,context){
 		var ratio = 1;
 		if(context.webkitBackingStorePixelRatio < 2){
@@ -240,7 +257,7 @@ function GameEngine(){
   		
 		//return window.devicePixelRatio;
 	}
-	
+	*/
 	this.getPixelRatio = function () {
 		var ctx = document.createElement("canvas").getContext("2d"),
 			dpr = window.devicePixelRatio || 1,
