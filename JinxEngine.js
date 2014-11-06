@@ -17,6 +17,7 @@ function GameEngine(){
 	this.eventStackIndex=0;
 	this.activeScene;
 	this.mousePos={x:0,y:0};
+	this.overrideScreenSizeAjustment=0;
 	
 	this.init = function(){
 		window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
@@ -73,7 +74,7 @@ function GameEngine(){
 		
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].update)==='function'){
-				this.objects[x].update();
+				this.objects[x].update(this);
 			}
 			if(this.inputActions()){
 				if(typeof(this.objects[x].input)==='function'){
@@ -213,6 +214,10 @@ function GameEngine(){
 		this.activeScene.init();
 	};
 	
+	this.overrideScreenResizer = function(){
+		this.overrideScreenSizeAjustment=1;
+	}
+	
 	this.getDisplayPixelDensity = function(canvas,context){
 		var ratio = 1;
 		if(context.webkitBackingStorePixelRatio < 2){
@@ -248,7 +253,7 @@ function GameEngine(){
 		return dpr / bsr;
 	};
 	
-	
+
 	
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
