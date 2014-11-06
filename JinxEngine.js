@@ -8,7 +8,7 @@ function GameEngine(){
 	gameEngineThis = this;
 	this.displayDomId;
 	this.requestID;
-	this.keys=[];
+	this.keys = new Array(400);
 	this.keysDown=[];//future depracation
 	this.keysUp=[];//future depracation
 	this.keysPressed=[];//future depracation
@@ -20,8 +20,18 @@ function GameEngine(){
 	this.mousePos={x:0,y:0};
 	this.overrideScreenSizeAjustment=0;
 	
+	window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
+	document.addEventListener("keydown",function(e){
+		console.log("key "+e.keyCode+" down.");
+		gameEngineThis.keys[e.keyCode] = true;
+	});
+	document.addEventListener("keyup",function(e){
+		console.log("key "+e.keyCode+" down.");
+		gameEngineThis.keys[e.keyCode] = false;
+	});
+	
 	this.init = function(){
-		window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
+		
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].init)==='function'){
 				this.objects[x].init(gameEngineThis);
@@ -209,12 +219,7 @@ function GameEngine(){
 	}
 	*/
 	
-	document.addEventListener("keydown", function (e) {
-    		keys[e.keyCode] = true;
-	});
-	document.addEventListener("keyup", function (e) {
-    		keys[e.keyCode] = false;
-	});
+
 	
 	/*
 	window.onkeydown = function(e){
