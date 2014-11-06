@@ -74,21 +74,27 @@ function GameEngine(){
 		}
 		
 		for(var x=0;x<this.objects.length;x++){
-			if(typeof(this.objects[x].update)==='function'){
-				this.objects[x].update(this);
-			}
-			if(this.inputActions()){
-				if(typeof(this.objects[x].input)==='function'){
-					//this.objects[x].input(this.keysDown,this.keysPressed,this.keysUp);
-					this.objects[x].input(this.keys);
+			if(typeof(this.objects[x])!==undefined){
+				obj = this.objects[x];
+				if(typeof(obj.update)==='function'){
+					obj.update(this);
 				}
-			}
-			gameEngineThis.engineLog("Event Stack Length: "+this.eventStack.length);
-			if(this.eventStack.length>0){
-				if(typeof(this.objects[x].EventLisener)==='function'){
-					this.objects[x].EventLisener(this.eventStack);
+				if(this.inputActions()){
+					if(typeof(obj.input)==='function'){
+						//this.objects[x].input(this.keysDown,this.keysPressed,this.keysUp);
+						obj.input(this.keys);
+					}
 				}
+				gameEngineThis.engineLog("Event Stack Length: "+this.eventStack.length);
+				if(this.eventStack.length>0){
+					if(typeof(obj.EventLisener)==='function'){
+						obj.EventLisener(this.eventStack);
+					}
+				}
+			}else{
+				console.log("Object "+x+" is undefined");
 			}
+			
 		}
 		//this.clearKeys();
 	}
