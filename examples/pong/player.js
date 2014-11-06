@@ -31,22 +31,22 @@ function Player(s,c,n){
 		}
 	}
 
-	this.input = function(keyDown,keyPress,KeyUp){
-		console.log(keyDown[0]);
+	this.input = function(keys){
+		//console.log(keyDown[0]);
 		if(this.side=="right"){
-			this.upKey=40;
-			this.downKey=38;
+			this.upKey=38;
+			this.downKey=40;
 		}else if(this.side=="left"){
-			this.upKey=83;
-			this.downKey=87;	
+			this.upKey=87;
+			this.downKey=83;	
 		}
-		if(keyDown.indexOf(this.upKey)){//up key
+		if(keys[this.upKey]){//up key
 			this.y-=this.speed;
 			if(this.y<0){
 				this.y=0;
 			}
 		}
-		if(keyDown.indexOf(this.downKey)){//down key
+		if(keys[this.downKey]){//down key
 			this.y+=this.speed;
 			if(this.y+this.paddleLength>this.gameEngine.getDisplayHeight()){
 				this.y=this.gameEngine.getDisplayHeight()-this.paddleLength;
