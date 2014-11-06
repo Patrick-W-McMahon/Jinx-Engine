@@ -90,7 +90,7 @@ function GameEngine(){
 				}
 			}
 		}
-		this.clearKeys();
+		//this.clearKeys();
 	}
 	
 	this.getMouse = function(v){
