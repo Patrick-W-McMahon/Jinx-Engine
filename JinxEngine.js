@@ -269,7 +269,7 @@ function GameEngine(){
 		//return window.devicePixelRatio;
 	}
 	*/
-	this.getPixelRatio = function () {
+	this.getPixelRatio = function () {//This function needs to be fixed should not be looking at "canvas" should be value of the set canvas
 		var ctx = document.createElement("canvas").getContext("2d"),
 			dpr = window.devicePixelRatio || 1,
 			bsr = ctx.webkitBackingStorePixelRatio ||
