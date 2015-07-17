@@ -17,7 +17,7 @@ function GameEngine(){
 	this.eventStack=[];
 	this.eventStackIndex=0;
 	this.activeScene;
-	this.mousePos={x:0,y:0};
+	this.mousePos={x:0,y:0,left:false,right:false};
 	this.overrideScreenSizeAjustment=0;
 	
 	window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
@@ -37,6 +37,7 @@ function GameEngine(){
 				this.objects[x].init(gameEngineThis);
 			}
 		}
+		
 		try{//FF,webkit,opera,IE>8
 			this.displayDomId.addEventListener('mousemove', function(e){
 				gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
@@ -53,6 +54,10 @@ function GameEngine(){
 				location.href = 'http://www.mosilla.org/en-US/firefox/new/';
 			}
 		}
+		
+		gameEngineThis.displayDomId.addEventListener("mousedown",function(){
+			gameEngineThis.mousePos.left=true;
+		},false);
 
 	}
 	
@@ -234,13 +239,23 @@ function GameEngine(){
 		
 	};
 	*/
-	
+	this.getGameEngine = function(){
+		return gameEngineThis;
+	}
 	
 	this.setScene = function(sceneObject){
-		this.activeScene.destroy();
-		this.activeScene=sceneObject;
-		this.activeScene.init();
+		gameEngineThis.stop();
+		if(gameEngineThis.activeScene!=undefined){
+			gameEngineThis.activeScene.destroy();
+		}
+		gameEngineThis.activeScene=sceneObject;
+		gameEngineThis.activeScene.init(gameEngineThis);
+		gameEngineThis.start();
 	};
+	
+	this.getActiveScene = function(){
+		return gameEngineThis.activeScene;
+	}
 	
 	this.overrideScreenResizer = function(){
 		this.overrideScreenSizeAjustment=1;
@@ -393,10 +408,15 @@ function GameEngine(){
 	
 	this.frame = function(){
 		gameEngineThis.frameCount++;
-		//this.activeScene.update();
+		if(gameEngineThis.activeScene){
+			gameEngineThis.activeScene.update();
+		}
 		gameEngineThis.update();
-		//this.activeScene.render(gameEngineThis.display);
-		gameEngineThis.render(gameEngineThis.display);
+		if(gameEngineThis.activeScene){
+			gameEngineThis.activeScene.render(gameEngineThis.display);
+		}else{
+			gameEngineThis.render(gameEngineThis.display);
+		}
 		if(gameEngineThis.loopState){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
 		}
