@@ -61,6 +61,12 @@ function GameEngine(){
 
 	}
 	
+	this.PlaySound = function(src){
+		var snd = new Audio(src); // buffers automatically when created
+		snd.play();
+	}
+	
+	
 	this.MousePositionToScreen = function(elm,evt){
 		var rect = this.displayDomId.getBoundingClientRect();
 	        return {
