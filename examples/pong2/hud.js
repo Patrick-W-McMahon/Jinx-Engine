@@ -2,13 +2,23 @@ function HUD(){
 	this.gameEngine;
 	this.playerOneScore=0;
 	this.playerTwoScore=0;
+	this.mousePos;
 
 	this.init = function(e){
 		this.gameEngine = e;
 	}
 	
 	this.update = function(){
-
+		this.mousePos=this.gameEngine.getMouse();
+		/*
+		if(this.mousePos.left){
+			//var scene = this.gameEngine.getActiveScene();
+			var scene = this.gameEngine.activeScene;
+			var ball = new Ball();
+			ball.init(this.gameEngine);
+			ball.setPosition(this.mousePos.x,this.mousePos.y);
+			scene.addObject(ball);
+		}*/
 	}
 	
 	this.input = function(keyDown,keyPress,KeyUp){
@@ -29,6 +39,28 @@ function HUD(){
 		}
 	}
 	
+	this.DrawMouseCursor = function(g){
+		var crossSize = 10;
+		if(this.mousePos.left){
+			g.fillStyle = "red";
+			g.strokeStyle="red";
+		}else{
+			g.fillStyle = "black";
+			g.strokeStyle="black";
+		}
+		g.lineWidth = 2;
+		g.beginPath();
+		g.moveTo(this.mousePos.x-crossSize,this.mousePos.y);
+		g.lineTo(this.mousePos.x+crossSize,this.mousePos.y);
+		g.stroke();
+		g.closePath();
+		g.beginPath();
+		g.moveTo(this.mousePos.x,this.mousePos.y-crossSize);
+		g.lineTo(this.mousePos.x,this.mousePos.y+crossSize);
+		g.stroke();
+		g.closePath();
+	}
+	
 	this.draw = function(g){
 		g.fillStyle = "black";
 		g.font="24px Verdana";
@@ -41,6 +73,7 @@ function HUD(){
 			g.fillText(""+this.playerOneScore,10,18);
 			g.fillText(""+this.playerTwoScore,this.gameEngine.getDisplayWidth()-15,18);
 		}
+		this.DrawMouseCursor(g);
 		
 	}
 

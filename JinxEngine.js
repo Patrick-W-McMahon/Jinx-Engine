@@ -8,21 +8,71 @@ function GameEngine(){
 	gameEngineThis = this;
 	this.displayDomId;
 	this.requestID;
-	this.keysDown=[];
-	this.keysUp=[];
-	this.keysPressed=[];
+	this.keys = new Array(400);
+	this.keysDown=[];//future depracation
+	this.keysUp=[];//future depracation
+	this.keysPressed=[];//future depracation
 	this.engineMode="live";
 	this.frameCount=0;
 	this.eventStack=[];
 	this.eventStackIndex=0;
 	this.activeScene;
+	this.mousePos={x:0,y:0,left:false,right:false};
+	this.overrideScreenSizeAjustment=0;
+	this.currentObjIndex=-1;
+	
+	window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
+	document.addEventListener("keydown",function(e){
+		console.log("key "+e.keyCode+" down.");
+		gameEngineThis.keys[e.keyCode] = true;
+	});
+	document.addEventListener("keyup",function(e){
+		console.log("key "+e.keyCode+" down.");
+		gameEngineThis.keys[e.keyCode] = false;
+	});
 	
 	this.init = function(){
+		
 		for(var x=0;x<this.objects.length;x++){
 			if(typeof(this.objects[x].init)==='function'){
 				this.objects[x].init(gameEngineThis);
 			}
 		}
+		
+		try{//FF,webkit,opera,IE>8
+			this.displayDomId.addEventListener('mousemove', function(e){
+				gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
+			},false);
+		}catch(e){//IE>6
+			document.attachEvent('onmousemove',function(e){
+				gameEngineThis.mousePos = gameEngineThis.MousePositionToScreen(gameEngineThis.display, e);
+			});
+		}finally{//unsupported browsers
+			try{
+				document.onmousemove = function(){};
+			}catch(die){
+				alert('Use a decent browser.');
+				location.href = 'http://www.mosilla.org/en-US/firefox/new/';
+			}
+		}
+		
+		gameEngineThis.displayDomId.addEventListener("mousedown",function(){
+			gameEngineThis.mousePos.left=true;
+		},false);
+
+	}
+	
+	this.PlaySound = function(src){
+		var snd = new Audio(src); // buffers automatically when created
+		snd.play();
+	}
+	
+	this.MousePositionToScreen = function(elm,evt){
+		var rect = this.displayDomId.getBoundingClientRect();
+	        return {
+	          x: evt.clientX - rect.left,
+	          y: evt.clientY - rect.top
+	        };
 	}
 	
 	this.update = function(){
@@ -45,22 +95,60 @@ function GameEngine(){
 		}
 		
 		for(var x=0;x<this.objects.length;x++){
-			if(typeof(this.objects[x].update)==='function'){
-				this.objects[x].update();
-			}
-			if(this.inputActions()){
-				if(typeof(this.objects[x].input)==='function'){
-					this.objects[x].input(this.keysDown,this.keysPressed,this.keysUp);
+			if(typeof(this.objects[x])!==undefined){
+				obj = this.objects[x];
+				if(typeof(obj.update)==='function'){
+					this.currentObjIndex = x;
+					obj.update(this);
 				}
-			}
-			gameEngineThis.engineLog("Event Stack Length: "+this.eventStack.length);
-			if(this.eventStack.length>0){
-				if(typeof(this.objects[x].EventLisener)==='function'){
-					this.objects[x].EventLisener(this.eventStack);
+				if(this.inputActions()){
+					if(typeof(obj.input)==='function'){
+						//this.objects[x].input(this.keysDown,this.keysPressed,this.keysUp);
+						obj.input(this.keys);
+					}
 				}
+				gameEngineThis.engineLog("Event Stack Length: "+this.eventStack.length);
+				if(this.eventStack.length>0){
+					if(typeof(obj.EventLisener)==='function'){
+						obj.EventLisener(this.eventStack);
+					}
+				}
+			}else{
+				console.log("Object "+x+" is undefined");
+			}
+			
+		}
+		for(var x=0;x<this.objects.length;x++){
+			if(typeof(this.objects[x])!==undefined){
+				obj = this.objects[x];
+				if(typeof(obj.deleteObj)==='function'){
+					if(obj.deleteObj()==true){
+						this.removeObjectByIndex(x);
+					}
+				}
+			}else{
+				this.removeObjectByIndex(x);
 			}
 		}
-		this.clearKeys();
+		//this.clearKeys();
+	}
+	
+	this.getMouse = function(v){
+		if(v==undefined){
+			return this.mousePos;
+		}else{
+			switch(v){
+				case 'x':
+					return this.mousePos.x;
+				break;
+				case 'y':
+					return this.mousePos.y;
+				break;
+				default:
+					return this.mousePos;
+				break;
+			}
+		}
 	}
 	
 	this.Event = function(){
@@ -135,19 +223,29 @@ function GameEngine(){
 	}
 	
 	this.inputActions = function(){
+		return true;//this will be fixed later this is temp
+	}
+	
+	/* old copy
+	this.inputActions = function(){
 		if(this.keysDown.length>0||this.keysPressed.length>0||this.keysUp.length>0){
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
+	*/
+	/*
 	this.clearKeys = function(){
 		this.keysDown.clear();
 		this.keysPressed.clear();
 		this.keysUp.clear();
 	}
+	*/
 	
+
+	
+	/*
 	window.onkeydown = function(e){
 		if(gameEngineThis.loopState){
 			gameEngineThis.engineLog("Key Down "+e.keyCode);
@@ -159,13 +257,29 @@ function GameEngine(){
 		}
 		
 	};
+	*/
+	this.getGameEngine = function(){
+		return gameEngineThis;
+	}
 	
 	this.setScene = function(sceneObject){
-		this.activeScene.destroy();
-		this.activeScene=sceneObject;
-		this.activeScene.init();
+		gameEngineThis.stop();
+		if(gameEngineThis.activeScene!=undefined){
+			gameEngineThis.activeScene.destroy();
+		}
+		gameEngineThis.activeScene=sceneObject;
+		gameEngineThis.activeScene.init(gameEngineThis);
+		gameEngineThis.start();
 	};
 	
+	this.getActiveScene = function(){
+		return gameEngineThis.activeScene;
+	}
+	
+	this.overrideScreenResizer = function(){
+		this.overrideScreenSizeAjustment=1;
+	}
+	/*
 	this.getDisplayPixelDensity = function(canvas,context){
 		var ratio = 1;
 		if(context.webkitBackingStorePixelRatio < 2){
@@ -188,11 +302,32 @@ function GameEngine(){
   		
 		//return window.devicePixelRatio;
 	}
+	*/
+	this.getPixelRatio = function () {//This function needs to be fixed should not be looking at "canvas" should be value of the set canvas
+		var ctx = document.createElement("canvas").getContext("2d"),
+			dpr = window.devicePixelRatio || 1,
+			bsr = ctx.webkitBackingStorePixelRatio ||
+				  ctx.mozBackingStorePixelRatio ||
+				  ctx.msBackingStorePixelRatio ||
+				  ctx.oBackingStorePixelRatio ||
+				  ctx.backingStorePixelRatio || 1;
+
+		return dpr / bsr;
+	};
+	
+
 	
 	this.setDisplay = function(canvas){
 		this.displayDomId = document.getElementById(canvas);
+		var ratio = this.getPixelRatio();
+		var w = this.displayDomId.width;
+		var h = this.displayDomId.height;
+		this.displayDomId.width = w*ratio;
+		this.displayDomId.height = h*ratio;
+		this.displayDomId.style.width = w+"px";
+		this.displayDomId.style.height = h+"px";
 		this.display = document.getElementById(canvas).getContext(this.context);
-		this.getDisplayPixelDensity(canvas,this.display);
+		//this.getDisplayPixelDensity(canvas,this.display);
 
 	}
 	
@@ -292,10 +427,15 @@ function GameEngine(){
 	
 	this.frame = function(){
 		gameEngineThis.frameCount++;
-		this.activeScene.update();
+		if(gameEngineThis.activeScene){
+			gameEngineThis.activeScene.update();
+		}
 		gameEngineThis.update();
-		this.activeScene.render(gameEngineThis.display);
-		gameEngineThis.render(gameEngineThis.display);
+		if(gameEngineThis.activeScene){
+			gameEngineThis.activeScene.render(gameEngineThis.display);
+		}else{
+			gameEngineThis.render(gameEngineThis.display);
+		}
 		if(gameEngineThis.loopState){
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
 		}

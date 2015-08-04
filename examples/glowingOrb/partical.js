@@ -1,6 +1,6 @@
-function Ball(){
+function Partical(){
 	var gameEngine;
-	this.radius=8;
+	this.radius=2;
 	var x;
 	var y;
 	var direction;

@@ -18,6 +18,11 @@ function Ball(){
 		this.direction = Math.randomNumberRange(0,360);
 	}
 	
+	this.setPosition = function(x,y){
+		this.x = x;
+		this.y = y;
+	}
+	
 	this.getAngle = function(pt3, pt2, pt1) {
 		var dx1 = pt1.x - pt2.x;
 		var dy1 = pt1.y - pt2.y;
