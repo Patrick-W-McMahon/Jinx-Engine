@@ -19,6 +19,7 @@ function GameEngine(){
 	this.activeScene;
 	this.mousePos={x:0,y:0,left:false,right:false};
 	this.overrideScreenSizeAjustment=0;
+	this.currentObjIndex=-1;
 	
 	window.requestAnimationFrame = window.requestAnimationFrame || function(callback) { window.setTimeout(callback,16) };
 	document.addEventListener("keydown",function(e){
@@ -61,12 +62,6 @@ function GameEngine(){
 
 	}
 	
-	this.PlaySound = function(src){
-		var snd = new Audio(src); // buffers automatically when created
-		snd.play();
-	}
-	
-	
 	this.MousePositionToScreen = function(elm,evt){
 		var rect = this.displayDomId.getBoundingClientRect();
 	        return {
@@ -98,6 +93,7 @@ function GameEngine(){
 			if(typeof(this.objects[x])!==undefined){
 				obj = this.objects[x];
 				if(typeof(obj.update)==='function'){
+					this.currentObjIndex = x;
 					obj.update(this);
 				}
 				if(this.inputActions()){
@@ -116,6 +112,18 @@ function GameEngine(){
 				console.log("Object "+x+" is undefined");
 			}
 			
+		}
+		for(var x=0;x<this.objects.length;x++){
+			if(typeof(this.objects[x])!==undefined){
+				obj = this.objects[x];
+				if(typeof(obj.deleteObj)==='function'){
+					if(obj.deleteObj()==true){
+						this.removeObjectByIndex(x);
+					}
+				}
+			}else{
+				this.removeObjectByIndex(x);
+			}
 		}
 		//this.clearKeys();
 	}
