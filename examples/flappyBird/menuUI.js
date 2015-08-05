@@ -6,11 +6,12 @@ function MenuUI(){
 		lvl3:{speed:0.7,max:1000,iterate:300,playerSpeed:0.85}
 	}
 	this.buttons=[];
+	var buttonXPos;
 	
 
 	this.init = function(e){
 		this.gameEngine = e;
-		var buttonXPos = (this.gameEngine.getDisplayWidth()/2)-100;
+		buttonXPos = (this.gameEngine.getDisplayWidth()/2)-100;
 		
 		this.buttons.push(new Button({
 			id:"levelOneButton",
@@ -107,7 +108,7 @@ function MenuUI(){
 	this.draw = function(g){
 		g.font="34px Verdana";
 		g.fillStyle="black";
-		g.fillText("Flappy Bird Example",(this.gameEngine.getDisplayWidth()/2)-180,60);
+		g.fillText("Flappy Bird Example",buttonXPos-80,60);
 		for(x=0;x<this.buttons.length;x++){
 			this.buttons[x].draw(g);
 		}
