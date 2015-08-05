@@ -7,7 +7,7 @@ function HUD(){
 	var screenWidth;
 	var screenHeightHalf;
 	var screenWidthHalf;
-	var game_over_sign, score_board;
+	var game_over_sign;
 
 	this.init = function(e){
 		this.gameEngine = e;
@@ -26,11 +26,9 @@ function HUD(){
 			width:screenWidthHalf-180,
 			height:screenHeightHalf-100,
 			textX:screenWidthHalf-80,
-			textY:screenHeightHalf
-		}
-		score_board={
-			x:screenWidthHalf-80,
-			y:screenHeightHalf+40
+			textY:screenHeightHalf,
+			scoreX:screenWidthHalf-80,
+			scoreY:screenHeightHalf+40
 		}
 	}
 	
@@ -61,7 +59,7 @@ function HUD(){
 			g.fillStyle = "white";
 			g.fillText("Game Over",game_over_sign.textX,game_over_sign.textY);
 			g.font="24px Verdana";
-			g.fillText("Score: "+this.playerOneScore,score_board.x,score_board.y);
+			g.fillText("Score: "+this.playerOneScore,game_over_sign.scoreX,game_over_sign.scoreY);
 		}
 	}
 }
