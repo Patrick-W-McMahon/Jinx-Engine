@@ -3,6 +3,11 @@ function HUD(){
 	this.playerOneScore=0;
 	this.mousePos;
 	this.gameState;
+	var screenHeight;
+	var screenWidth;
+	var screenHeightHalf;
+	var screenWidthHalf;
+	var game_over_sign, score_board;
 
 	this.init = function(e){
 		this.gameEngine = e;
@@ -11,6 +16,22 @@ function HUD(){
 	this.update = function(){
 		this.mousePos = this.gameEngine.getEventInStack("cursor",false);
 		this.gameState = this.gameEngine.getEventInStack("gameover",false);
+		screenHeight = this.gameEngine.getDisplayHeight();
+		screenWidth = this.gameEngine.getDisplayWidth();
+		screenHeightHalf = screenHeight/2;
+		screenWidthHalf = screenWidth/2;
+		game_over_sign={
+			x:screenWidthHalf-100,
+			y:screenHeightHalf-40,
+			width:screenWidthHalf-180,
+			height:screenHeightHalf-100,
+			textX:screenWidthHalf-80,
+			textY:screenHeightHalf
+		}
+		score_board={
+			x:screenWidthHalf-80,
+			y:screenHeightHalf+40
+		}
 	}
 	
 	this.input = function(keyDown,keyPress,KeyUp){
@@ -36,11 +57,11 @@ function HUD(){
 		if(this.gameState){
 			g.font="32px Verdana";
 			g.fillStyle = "black";
-			g.fillRect((this.gameEngine.getDisplayWidth()/2)-100,(this.gameEngine.getDisplayHeight()/2)-40,(this.gameEngine.getDisplayWidth()/2)-180,(this.gameEngine.getDisplayHeight()/2)-100);
+			g.fillRect(game_over_sign.x,game_over_sign.y,game_over_sign.width,game_over_sign.height);
 			g.fillStyle = "white";
-			g.fillText("Game Over",(this.gameEngine.getDisplayWidth()/2)-80,this.gameEngine.getDisplayHeight()/2);
+			g.fillText("Game Over",game_over_sign.textX,game_over_sign.textY);
 			g.font="24px Verdana";
-			g.fillText("Score: "+this.playerOneScore,(this.gameEngine.getDisplayWidth()/2)-80,(this.gameEngine.getDisplayHeight()/2)+40);
+			g.fillText("Score: "+this.playerOneScore,score_board.x,score_board.y);
 		}
 	}
 }
