@@ -10,10 +10,11 @@ function MenuUI(){
 
 	this.init = function(e){
 		this.gameEngine = e;
+		var buttonXPos = (this.gameEngine.getDisplayWidth()/2)-100;
 		
 		this.buttons.push(new Button({
 			id:"levelOneButton",
-			x:(this.gameEngine.getDisplayWidth()/2)-100,
+			x:buttonXPos,
 			y:100,
 			height:50,
 			width:200,
@@ -26,7 +27,7 @@ function MenuUI(){
 		
 		this.buttons.push(new Button({
 			id:"levelTwoButton",
-			x:(this.gameEngine.getDisplayWidth()/2)-100,
+			x:buttonXPos,
 			y:160,
 			height:50,
 			width:200,
@@ -39,7 +40,7 @@ function MenuUI(){
 		
 		this.buttons.push(new Button({
 			id:"levelThreeButton",
-			x:(this.gameEngine.getDisplayWidth()/2)-100,
+			x:buttonXPos,
 			y:220,
 			height:50,
 			width:200,
