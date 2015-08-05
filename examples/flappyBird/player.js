@@ -18,15 +18,18 @@ function Player(c,n,s){
 	}
 
 	this.input = function(keys){
-		this.upKey=32;
-		if(keys[this.upKey]){//up key
-			this.y-=this.speed;
-			if(this.y<0){
-				this.y=0;
+		var gameState = this.gameEngine.getEventInStack("gameover",false);
+		if(gameState==false){
+			this.upKey=32;
+			if(keys[this.upKey]){//up key
+				this.y-=this.speed;
+				if(this.y<0){
+					this.y=0;
+				}
+				this.movingUp=true;
+			}else{
+				this.movingUp=false;
 			}
-			this.movingUp=true;
-		}else{
-			this.movingUp=false;
 		}
 	}
 		
