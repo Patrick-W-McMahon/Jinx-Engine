@@ -5,7 +5,6 @@ function MenuUI(){
 		lvl2:{speed:0.45,max:1800,iterate:600,playerSpeed:0.65},
 		lvl3:{speed:0.7,max:1000,iterate:300,playerSpeed:0.85}
 	}
-	this.cursorBox;
 	this.buttons=[];
 	
 
