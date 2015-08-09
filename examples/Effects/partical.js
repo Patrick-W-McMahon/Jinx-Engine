@@ -13,6 +13,9 @@ function Partical(){
 	this.gravityDirection=55;
 	this.gravityStrength=1;
 	this.useGravity=true;
+	this.img;
+	this.displayType="image";
+	this.imgSize;
 	
 	
 	this.init = function(e){
@@ -24,6 +27,10 @@ function Partical(){
 		this.direction = Math.randomNumberRange(0,360);
 		this.x_spawn=this.x;
 		this.y_spawn=this.y;
+		if(this.displayType=="image"){
+			this.img  = new Image();
+			this.imgSize = Math.randomNumberRange(1,40);
+		}
 	}
 	
 	this.InScreenViewTest = function(){
@@ -55,7 +62,17 @@ function Partical(){
 			this.radius=.01;
 		}
 		
-
+		if(this.displayType=="image"){
+			if(this.life>50){
+				this.img.src = "fire"+Math.randomNumberRange(1,3)+".png";
+			}else if(this.life>40){
+				this.img.src = "dark_smoke1.png";
+				this.imgSize=40;
+			}else{
+				this.img.src = "smoke"+Math.randomNumberRange(1,3)+".png";
+				this.imgSize=40;
+			}
+		}
 	}
 	
 	this.deleteObj = function(){
@@ -66,25 +83,29 @@ function Partical(){
 	}
 	
 	this.draw = function(g){
-		if(this.life>50){
-			g.fillStyle = "red";
+		if(this.displayType=="image"){
+			g.drawImage(this.img,this.x-10,this.y-10,this.imgSize,this.imgSize);
+		}else{
+			if(this.life>50){
+				g.fillStyle = "red";
+			}
+			if(this.life<=30){
+				g.fillStyle = "orange";
+			}
+			if(this.life<=20){
+				g.fillStyle = "yellow";
+			}
+			if(this.life<=10){
+				g.fillStyle = "gray";
+			}
+			if(this.life<=0){
+				g.fillStyle = "black";
+			}
+			
+			//g.fillRect(this.x,this.y,this.radius*2,this.radius*2);
+			g.beginPath();
+			g.arc(this.x,this.y,this.radius,0,2*Math.PI);
+			g.fill();
 		}
-		if(this.life<=30){
-			g.fillStyle = "orange";
-		}
-		if(this.life<=20){
-			g.fillStyle = "yellow";
-		}
-		if(this.life<=10){
-			g.fillStyle = "gray";
-		}
-		if(this.life<=0){
-			g.fillStyle = "black";
-		}
-		
-		//g.fillRect(this.x,this.y,this.radius*2,this.radius*2);
-		g.beginPath();
-		g.arc(this.x,this.y,this.radius,0,2*Math.PI);
-		g.fill();
 	}
 }

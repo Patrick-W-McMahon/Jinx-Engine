@@ -8,7 +8,10 @@ myDom.OnReady(function(){
 		myEngine.stop();
 		var mainMenu = new Scene();
 		var menuUI = mainMenu.addObject(new MenuUI());
-		var cursor = mainMenu.addObject(new Cursor());
+		var tmpCur = new Cursor("image");
+		tmpCur.imgSrc="cursor.png";
+		var cursor = mainMenu.addObject(tmpCur);
+		//var cursor = mainMenu.addObject(new Cursor());
 		myEngine.setScene(mainMenu); 
 		myEngine.init();
 		myEngine.start();

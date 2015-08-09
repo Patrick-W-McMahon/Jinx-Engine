@@ -10,7 +10,7 @@ function Player(c,n,s){
 	this.upKey;
 	this.movingUp=false;
 	this.img;
-	this.displayType="basic";//basic or image
+	this.displayType="image";
 
 	
 	this.init = function(e){
