@@ -18,7 +18,7 @@ function SpawnPoint(){
 		this.y = this.gameEngine.getDisplay("heightCenter")+100; 
 		if(this.displayType=="image"){
 			this.img  = new Image(); 
-			this.img.src = "logs.png";
+			this.img.src = "textures/logs.png";
 		}else{
 			for(x=0;x<15;x++){
 				this.genStick();

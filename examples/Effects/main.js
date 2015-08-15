@@ -6,6 +6,7 @@ myDom.OnReady(function(){
 	myEngine.setDisplay("screen");
 	myDom.getId("newFireButton").addEventListener("click", function(){
 		myEngine.stop();
+		var backgroundId = myEngine.addObject(new Background());
 		var particalId = myEngine.addObject(new SpawnPoint());
 		var hudId = myEngine.addObject(new HUD());
 		myEngine.init();

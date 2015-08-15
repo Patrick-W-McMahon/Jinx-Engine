@@ -64,12 +64,12 @@ function Partical(){
 		
 		if(this.displayType=="image"){
 			if(this.life>50){
-				this.img.src = "fire"+Math.randomNumberRange(1,3)+".png";
+				this.img.src = "textures/fire"+Math.randomNumberRange(1,3)+".png";
 			}else if(this.life>40){
-				this.img.src = "dark_smoke1.png";
+				this.img.src = "textures/dark_smoke1.png";
 				this.imgSize=40;
 			}else{
-				this.img.src = "smoke"+Math.randomNumberRange(1,3)+".png";
+				this.img.src = "textures/smoke"+Math.randomNumberRange(1,3)+".png";
 				this.imgSize=40;
 			}
 		}
