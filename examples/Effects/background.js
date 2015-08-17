@@ -1,9 +1,9 @@
 function Background(){
-	this.gameEngine;
+	//this.gameEngine;
 	var mySprite;
 
 	this.init = function(e){
-		this.gameEngine = e;
+		//this.gameEngine = e;
 		var mySpriteSheet = new SpriteSheet("textures/coin-sprite-animation-sprite-sheet.png");
 		mySpriteSheet.addAnimation(
 			{
