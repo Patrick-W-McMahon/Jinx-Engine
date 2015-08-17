@@ -29,7 +29,7 @@ function Background(){
 		mySprite.setAnimation("spin");
 		mySprite.isSpriteSheet=true;
 		mySprite.spriteSheet = mySpriteSheet;
-		mySprite.texture = new Texture("textures/coin-sprite-animation-sprite-sheet.png",0,0,50,50);
+		//mySprite.texture = new Texture("textures/coin-sprite-animation-sprite-sheet.png",0,0,50,50);
 	}
 	
 	this.update = function(){
