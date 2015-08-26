@@ -341,6 +341,10 @@ function GameEngine(){
 		return this.objects[this.objects.length-1].id;//return the objects id
 	}
 	
+	this.getObjectByIndex = function(i){
+		return this.objects[i];
+	}
+	
 	this.purgeObjects = function(){
 		this.objects.clear();
 	}
@@ -422,6 +426,8 @@ function GameEngine(){
 		this.purgeObjects();
 		this.frameCount=0;
 		this.render(this.display);
+		window.cancelAnimationFrame(gameEngineThis.requestID);
+		gameEngineThis.requestID = undefined;
 	}
 	
 	this.frame = function(){
@@ -436,11 +442,140 @@ function GameEngine(){
 			gameEngineThis.render(gameEngineThis.display);
 		}
 		if(gameEngineThis.loopState){
+			window.cancelAnimationFrame(gameEngineThis.requestID);
+			gameEngineThis.requestID = undefined;
 			gameEngineThis.requestID = window.requestAnimationFrame(gameEngineThis.frame);
 		}
 	}
 	
 };
+
+function ArcObject(x,y,radius,startAngle,endAngle,anticlockwise){
+	this.x=x;
+	this.y=y;
+	this.radius=radius;
+	this.startAngle=startAngle;
+	this.endAngle=endAngle;
+	this.anticlockwise=anticlockwise;
+	this.path = new Path2D();
+	this.path.arc(x,y,radius,startAngle,endAngle,anticlockwise);
+	this.path.closePath();
+	this.g=false;
+	
+	this.getObjType = function(){
+		return "Arc";
+	}
+	
+	this.pointIntersects = function(x,y){
+		var ranges={
+			x1:this.x-this.radius,
+			x2:this.x+this.radius,
+			y1:this.y-this.radius,
+			y2:this.y+this.radius
+		}
+		if(point.x>=ranges.x1&&point.x<=ranges.x2&&point.y>=ranges.y1&&point.y<=ranges.y2){
+			//work on this
+		}
+		return false;
+	}
+	
+	this.pointIn = function(x,y){
+		if(this.g){
+			return this.g.isPointInPath(this.path,x,y);
+		}
+	}
+	
+	this.rectIntersects = function(rect){
+		//work on this
+	}
+	
+	this.getPath = function(g){
+		this.g=g;
+		return this.path;
+	}
+}
+
+function Rectangle(x,y,h,w){
+	this.x=x;
+	this.y=y;
+	this.height=h;
+	this.width=w;
+	this.path = new Path2D();
+	this.path.rect(x,y,h,w);
+	this.path.closePath();
+	this.g=false;
+	this.roundedSides={tl:0,tr:0,bl:0,br:0};
+	
+	this.getObjType = function(){
+		return "Rectangle";
+	}
+	
+	this.rounding = function(side,radius){
+		switch(side){
+			case "tl":
+				this.roundedSides.tl=radius;
+			break;
+			case "tr":
+				this.roundedSides.tr=radius;
+			break;
+			case "bl":
+				this.roundedSides.bl=radius;
+			break;
+			case "br":
+				this.roundedSides.br=radius;
+			break;
+			case "all":
+			default:
+				this.roundedSides.tl=radius;
+				this.roundedSides.tr=radius;
+				this.roundedSides.bl=radius;
+				this.roundedSides.br=radius;
+		}
+		if(this.hasRoundedCorners()){
+			this.path.moveTo(x,y+radius);
+			this.path.lineTo(x,y+height-radius);
+			this.path.quadraticCurveTo(x,y+height,x+radius,y+height);
+			this.path.lineTo(x+width-radius,y+height);
+			this.path.quadraticCurveTo(x+width,y+height,x+width,y+height-radius);
+			this.path.lineTo(x+width,y+radius);
+			this.path.quadraticCurveTo(x+width,y,x+width-radius,y);
+			this.path.lineTo(x+radius,y);
+			this.path.quadraticCurveTo(x,y,x,y+radius);
+			this.path.closePath();
+		}else{
+			this.path.rect(this.x,this.y,this.h,this.w);
+		}
+	}
+	
+	this.hasRoundedCorners = function(){
+		if(this.roundedSides.tl>0||this.roundedSides.tr>0||this.roundedSides.bl>0||this.roundedSides.br>0){
+			return true;
+		}
+		return false;
+	}
+	
+	this.RectIntersects = function(rect){
+		if(typeof(rect)==="undefined"){
+			return false;
+		}else{
+			if(this.x < rect.x + rect.width && this.x + this.width > rect.x && this.y < rect.y + rect.height && this.height + this.y > rect.y){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	this.pointIn = function(x,y){
+		if(this.g){
+			return this.g.isPointInPath(this.path,x,y);
+		}
+	}
+	
+	this.getPath = function(g){
+		this.g=g;
+		return this.path;
+	}	
+}
 
 /*
 *Basic Texture object that is used to define a texture that will be drawn by a sprite
@@ -463,8 +598,9 @@ function SpriteSheet(src){
 	img.src=src;
 	this.texture=img;
 	this.spriteGroups=[];
+	this.sheetItems=[];
 	
-	this.addAnimation = function(obj){
+	this.addAnimation = function(obj){//{name:,matrix:[{x,y,h,w}...,],loop,delay}
 		this.spriteGroups.push(obj);
 	}
 	
@@ -475,6 +611,19 @@ function SpriteSheet(src){
 			}
 		}
 	}
+	
+	this.addItem = function(obj){//{name,x,y,h,w}
+		this.sheetItems.push(obj);
+	}
+	
+	this.getItem = function(name){
+		for(x=0;x<this.sheetItems.length;x++){
+			if(this.sheetItems[x].name==name){
+				return this.sheetItems[x];
+			}
+		}
+	}
+	
 }
 
 /*
@@ -559,7 +708,7 @@ function Sprite(eId){
 		return this.canvasPos;
 	}
 	
-	this.isHover
+	//this.isHover
 	
 	this.draw = function(g){
 		var texture,tx,ty,tw,th,cx,cy,cw,ch;
