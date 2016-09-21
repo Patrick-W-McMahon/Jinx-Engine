@@ -25,7 +25,7 @@ Include the engine file (JinxEngine.js) along with any system components you may
 Features
 ========
 
-No flash
+No Flash
 --------------
 This is a full HTML5 compatable game engine. setup a canvas tag and point the engine to it and let it do its work.
 
