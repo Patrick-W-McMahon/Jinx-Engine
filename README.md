@@ -11,13 +11,13 @@ Jinx-Engine is a scalable Game Engine build 100% in JavaScript. Used to build in
 
 Quickstart
 ==========
-
+See the examples folder lots of simple examples have been included. Remember to include ObjectiveJs into the project.
+The engine will fail if ObjectiveJS is not included.
 
 Requirements
 ============
  - ObjectiveJS libs - https://github.com/Patrick-W-McMahon/ObjectiveJS
  
-
 Installation
 ============
 Include the engine file (JinxEngine.js) along with any system components you may want to use (found in the systems folder).
