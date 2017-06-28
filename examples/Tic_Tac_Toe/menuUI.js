@@ -5,13 +5,14 @@ function MenuUI(){
 	//this.buttionPos = {x:0,y:100,height:50,width:200}
 	this.buttons=[];
 	var buttonXPos;
+	var player1=0,player2=0;
 
 	this.init = function(e){
 		this.gameEngine = e;
 		//this.buttionPos.x = (this.gameEngine.getDisplayWidth()/2)-100;
 		buttonXPos = (this.gameEngine.getDisplayWidth()/2)-100;
 		this.buttons.push(new Button({
-			id:"PvP",
+			id:"startGameButton",
 			x:buttonXPos,
 			y:100,
 			height:50,
@@ -20,11 +21,11 @@ function MenuUI(){
 			hoverColor:"green",
 			fontColor:"white",
 			borderColor:"black",
-			text:"Play PvP"
+			text:"Start Game"
 		}));
 		
 		this.buttons.push(new Button({
-			id:"PvC",
+			id:"pxSelect",
 			x:buttonXPos,
 			y:160,
 			height:50,
@@ -33,11 +34,11 @@ function MenuUI(){
 			hoverColor:"green",
 			fontColor:"white",
 			borderColor:"black",
-			text:"Play PvC"
+			text:"Player X"
 		}));
 		
 		this.buttons.push(new Button({
-			id:"CvP",
+			id:"poSelect",
 			x:buttonXPos,
 			y:220,
 			height:50,
@@ -46,19 +47,7 @@ function MenuUI(){
 			hoverColor:"green",
 			fontColor:"white",
 			borderColor:"black",
-			text:"Play CvP"
-		}));
-		this.buttons.push(new Button({
-			id:"CvC",
-			x:buttonXPos,
-			y:280,
-			height:50,
-			width:200,
-			baseColor:"darkGreen",
-			hoverColor:"green",
-			fontColor:"white",
-			borderColor:"black",
-			text:"Play CvC"
+			text:"Player O"
 		}));
 		for(x=0;x<this.buttons.length;x++){
 			this.buttons[x].init(e);
@@ -69,35 +58,37 @@ function MenuUI(){
 		for(x=0;x<this.buttons.length;x++){
 			this.buttons[x].update();
 		}
-		var player1,player2;
+		
 		var levelSelect = false;
-		if(this.gameEngine.getEventInStack("PvP",true)){
-			player1=0;
-			player2=0;
+		if(this.gameEngine.getEventInStack("startGameButton",true)){
 			levelSelect=true;
 		}
-		if(this.gameEngine.getEventInStack("PvC",true)){
-			player1=0;
-			player2=1;
-			levelSelect=true;
+		if(this.gameEngine.getEventInStack("pxSelect",true)){
+			if(player1){
+				player1=0;
+			}else{
+				player1=1;
+			}
 		}
-		if(this.gameEngine.getEventInStack("CvP",true)){
-			player1=1;
-			player2=0;
-			levelSelect=true;
+		if(this.gameEngine.getEventInStack("poSelect",true)){
+			if(player2){
+				player2=0;
+			}else{
+				player2=1;
+			}
 		}
-		if(this.gameEngine.getEventInStack("CvC",true)){
-			player1=1;
-			player2=1;
-			levelSelect=true;
-		}
+		
 		
 		if(levelSelect){
 			var gameScene = new Scene();
-			var hudId = gameScene.addObject(new HUD());
-			var playerOneId = gameScene.addObject(new Player("left","red","Player One",player1));
-			var playerTwoId = gameScene.addObject(new Player("right","blue","Player Two",player2));
-			var ballId = gameScene.addObject(new Ball());
+			var gameBoard = gameScene.addObject(new GameBoard());
+			//var hudId = gameScene.addObject(new HUD());
+			var tmpCur = new Cursor("image");
+			tmpCur.imgSrc="cursor.png";
+			var cursor = gameScene.addObject(tmpCur);
+			//var playerOneId = gameScene.addObject(new Player("left","red","Player X",player1));
+			//var playerTwoId = gameScene.addObject(new Player("right","blue","Player O",player2));
+			//var ballId = gameScene.addObject(new Ball());
 			this.gameEngine.setScene(gameScene); 
 			this.gameEngine.init();
 		}
@@ -187,6 +178,17 @@ function MenuUI(){
 		g.fillText("Pong Example Using Scenes",(this.gameEngine.getDisplayWidth()/2)-220,60);
 		//this.DrawPlayButton(g);
 		//this.DrawMouseCursor(g);
+		g.font="12px Verdana";
+		if(player1){
+			g.fillText("Player X: Computer",20,160);
+		}else{
+			g.fillText("Player X: Player",20,160);
+		}
+		if(player2){
+			g.fillText("Player O: Computer",20,180);
+		}else{
+			g.fillText("Player O: Player",20,180);
+		}
 		for(x=0;x<this.buttons.length;x++){
 			this.buttons[x].draw(g);
 		}

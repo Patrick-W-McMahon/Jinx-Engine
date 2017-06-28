@@ -62,18 +62,21 @@ function Ball(){
 				//this.direction = 2 * (90 - this.direction) + 180;
 			}
 			if(this.y<0){
+			/*
 				this.y=0;
 				var wallX = 0;
 				var wallY = Math.findYofCircleByDegrees(this.y,speed,this.direction);
-				this.direction = Math.AngleOfReflection(Math.angleOfTwoLines(this.x,this.y,wallX,wallY));
+				this.direction = Math.AngleOfReflection(Math.angleOfTwoLines(this.x,this.y,wallX,wallY));*/
+				this.direction+= this.direction;
 			}
 			if(this.y+this.radius>this.gameEngine.getDisplayHeight()){
-				var v=this.direction;
+				/*var v=this.direction;
 				var n=90;
 				var u = (v*n/n*n)*n;
 				var w=v-u;
-				this.direction=w;
+				this.direction=w;*/
 				//this.direction = 2 * (90 - this.direction) + 180;
+				this.direction+= this.direction;
 			}
 			var errorBuffer = 3;
 			if(this.x<-errorBuffer||this.y<-errorBuffer||this.x>this.gameEngine.getDisplay("width")+errorBuffer||this.y>this.gameEngine.getDisplay("height")+errorBuffer){
@@ -81,7 +84,43 @@ function Ball(){
 				this.y = this.gameEngine.getDisplay("heightCenter"); 
 				this.direction = Math.randomNumberRange(0,360);
 			}
+			
+			var player1 = this.gameEngine.getEventInStack("player_Player One",false);
+			var player2 = this.gameEngine.getEventInStack("player_Player Two",false);
+			
+			this.player1CollitionBox ={
+				x:player1.x-9,
+				y:player1.y-9,
+				width:player1.width,
+				height:player1.height
+			}
+			
+			this.player2CollitionBox ={
+				x:player2.x-9,
+				y:player2.y-9,
+				width:player2.width,
+				height:player2.height
+			}
+			
+			this.ballCollitionBox={
+				x:this.x-9,
+				y:this.y-9,
+				width:8,
+				height:8,
+			}
+			
+			if(this.gameEngine.collitionDetection(this.player1CollitionBox,this.ballCollitionBox)){//player One
+				this.direction+= this.direction;
+			}
+			
+			if(this.gameEngine.collitionDetection(this.player2CollitionBox,this.ballCollitionBox)){//player Two
+				this.direction+= this.direction;
+			}
+			
+			this.gameEngine.getEventInStack("ball",true);
+			this.gameEngine.addEvent({name:"ball",x:this.x,y:this.y});
 		}
+		
 		
 
 	}

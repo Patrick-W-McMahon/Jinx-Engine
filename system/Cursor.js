@@ -1,7 +1,9 @@
 function Cursor(t){
 	this.gameEngine;
 	this.mousePos;
-	this.type=t
+	this.type=t;
+	this.img;
+	this.imgSrc;
 
 	this.init = function(e){
 		this.gameEngine = e;
@@ -14,6 +16,10 @@ function Cursor(t){
 		this.mousePos=this.gameEngine.getMouse();
 		this.gameEngine.getEventInStack("cursor",true);
 		this.gameEngine.addEvent({name:"cursor",x:this.mousePos.x,y:this.mousePos.y,left:this.mousePos.left});
+		if(this.type=="image"){
+			this.img  = new Image();
+			this.img.src = this.imgSrc;
+		}
 	}
 	
 	this.drawCrossHair = function(g){
@@ -59,6 +65,9 @@ function Cursor(t){
 		switch(this.type){
 			case "crosshair":
 				this.drawCrossHair(g);
+			break;
+			case "image":
+				g.drawImage(this.img,this.mousePos.x,this.mousePos.y,40,40);
 			break;
 			default:
 				this.drawDefault(g);

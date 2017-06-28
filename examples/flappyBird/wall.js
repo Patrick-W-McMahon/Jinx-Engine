@@ -63,6 +63,8 @@ function Wall(c,s,d){
 		g.fillStyle = this.color;
 		g.fillRect(this.wallOneCollitionBox.x,this.wallOneCollitionBox.y,this.wallOneCollitionBox.width,this.wallOneCollitionBox.height);
 		g.fillRect(this.wallTwoCollitionBox.x,this.wallTwoCollitionBox.y,this.wallTwoCollitionBox.width,this.wallTwoCollitionBox.height);
+		//g.fillStyle = "green";
+		//g.fillRect(this.playerCollitionBox.x,this.playerCollitionBox.y,this.playerCollitionBox.width,this.playerCollitionBox.height);
 	}
 	
 	

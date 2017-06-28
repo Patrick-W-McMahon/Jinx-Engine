@@ -8,14 +8,21 @@ function SpawnPoint(){
 	this.buttonHover=false;
 	this.spawnGen=4;
 	this.mousePos;
+	this.img;
+	this.displayType="image";
 	
 	
 	this.init = function(e){
 		this.gameEngine = e;
 		this.x = this.gameEngine.getDisplay("widthCenter");
 		this.y = this.gameEngine.getDisplay("heightCenter")+100; 
-		for(x=0;x<15;x++){
-			this.genStick();
+		if(this.displayType=="image"){
+			this.img  = new Image(); 
+			this.img.src = "textures/logs.png";
+		}else{
+			for(x=0;x<15;x++){
+				this.genStick();
+			}
 		}
 	}
 	
@@ -36,7 +43,7 @@ function SpawnPoint(){
 		for(x=0;x<this.spawnGen;x++){
 			var partical = new Partical();
 			partical.x=Math.randomNumberRange(this.x-width,this.x+width);
-			partical.y=this.y;
+			partical.y=Math.randomNumberRange(this.y-40,this.y+40);
 			partical.init(this.gameEngine);
 			this.gameEngine.addObject(partical);
 		}
@@ -89,30 +96,34 @@ function SpawnPoint(){
 	}
 	
 	this.draw = function(g){
-		g.fillStyle = "black";
-		//g.fillRect(this.x,this.y,this.radius*2,this.radius*2);
-		g.beginPath();
-		g.arc(this.x,this.y,this.radius,0,2*Math.PI);
-		g.fill();
-		for(x=0;x<15;x++){
-			this.drawStick(g,x);
+		if(this.displayType=="image"){
+			g.drawImage(this.img,this.x-80,this.y-10,200,100);
+		}else{
+			g.fillStyle = "black";
+			//g.fillRect(this.x,this.y,this.radius*2,this.radius*2);
+			g.beginPath();
+			g.arc(this.x,this.y,this.radius,0,2*Math.PI);
+			g.fill();
+			for(x=0;x<15;x++){
+				this.drawStick(g,x);
+			}
+			/*
+			g.beginPath();
+			g.moveTo(this.x-40,this.y-20);
+			g.lineTo(this.x+60,this.y+20);
+			g.lineTo(this.x+67,this.y+28);
+			g.fill();
+			g.beginPath();
+			g.moveTo(this.x+40,this.y-20);
+			g.lineTo(this.x-60,this.y+20);
+			g.lineTo(this.x-67,this.y+28);
+			g.fill();
+			g.beginPath();
+			g.moveTo(this.x+40,this.y-20);
+			g.lineTo(this.x-60,this.y+20);
+			g.lineTo(this.x-67,this.y+28);
+			g.fill();
+			*/
 		}
-		/*
-		g.beginPath();
-		g.moveTo(this.x-40,this.y-20);
-		g.lineTo(this.x+60,this.y+20);
-		g.lineTo(this.x+67,this.y+28);
-		g.fill();
-		g.beginPath();
-		g.moveTo(this.x+40,this.y-20);
-		g.lineTo(this.x-60,this.y+20);
-		g.lineTo(this.x-67,this.y+28);
-		g.fill();
-		g.beginPath();
-		g.moveTo(this.x+40,this.y-20);
-		g.lineTo(this.x-60,this.y+20);
-		g.lineTo(this.x-67,this.y+28);
-		g.fill();
-		*/
 	}
 }

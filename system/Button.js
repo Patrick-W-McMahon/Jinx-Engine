@@ -7,33 +7,42 @@ function Button(args){
 	this.buttonColors = {base:args.baseColor,hover:args.hoverColor,font:args.fontColor,border:args.borderColor};
 	this.cursorBox;
 	this.buttonId = args.id;
+	this.delay=30;
+	this.delayCounter=0;
+	this.fontStyle="24px Verdana";
+	
 
 	this.init = function(e){
 		this.gameEngine = e;
 	}
 	
 	this.update = function(){
-		this.mousePos = this.gameEngine.getEventInStack("cursor",false);
-		this.cursorBox={
-			x:this.mousePos.x,
-			y:this.mousePos.y,
-			height:2,
-			width:2
-		}
-		if(this.gameEngine.collitionDetection(this.cursorBox,this.buttionPos)){
-			this.buttonHover=true;
-			if(this.mousePos.left){
-				this.gameEngine.addEvent({name:this.buttonId,clicked:true});
+		if(this.delayCounter==0){
+			this.mousePos = this.gameEngine.getEventInStack("cursor",false);
+			this.cursorBox={
+				x:this.mousePos.x,
+				y:this.mousePos.y,
+				height:2,
+				width:2
+			}
+			if(this.gameEngine.collitionDetection(this.cursorBox,this.buttionPos)){
+				this.buttonHover=true;
+				if(this.mousePos.left){
+					this.gameEngine.addEvent({name:this.buttonId,clicked:true});
+					this.delayCounter=this.delay;
+				}
+			}else{
+				this.buttonHover=false;
 			}
 		}else{
-			this.buttonHover=false;
+			this.delayCounter--;
 		}
 	}
 	
 	this.draw = function(g){
 		g.beginPath();
 		g.strokeStyle=this.buttonColors.border;
-		g.font="24px Verdana";
+		g.font=this.fontStyle;
 		if(this.buttonHover){
 			g.fillStyle=this.buttonColors.hover;
 		}else{

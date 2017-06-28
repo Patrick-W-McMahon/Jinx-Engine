@@ -8,7 +8,6 @@ function MenuUI(){
 	this.buttons=[];
 	var buttonXPos;
 	
-
 	this.init = function(e){
 		this.gameEngine = e;
 		buttonXPos = (this.gameEngine.getDisplayWidth()/2)-100;
@@ -99,7 +98,9 @@ function MenuUI(){
 			}
 			var player = gameScene.addObject(new Player("red","Player",playerSpeed));
 			var hudId = gameScene.addObject(new HUD());
-			var cursor = gameScene.addObject(new Cursor("crosshair"));
+			var tmpCur = new Cursor("image");
+			tmpCur.imgSrc="cursor.gif";
+			var cursor = gameScene.addObject(tmpCur);
 			this.gameEngine.setScene(gameScene); 
 			this.gameEngine.init();
 		}
@@ -113,5 +114,4 @@ function MenuUI(){
 			this.buttons[x].draw(g);
 		}
 	}
-
 }

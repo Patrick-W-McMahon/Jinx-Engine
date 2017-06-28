@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Pong</title>
+	<title>Tic Tac Toe</title>
 	<link rel="stylesheet" href="style.css">
 	<script src="../../libs/ObjectiveJS/core.o.js"></script>
 	<script src="../../libs/ObjectiveJS/math.o.js"></script>
 	<script src="../../libs/ObjectiveJS/array.o.js"></script>
 	<script src="../../libs/ObjectiveJS/dom.o.js"></script>
-	<script src="background.js"></script>
-	<script src="partical.js"></script>
-	<script src="spawnPoint.js"></script>
+	<script src="../../system/Scene.js"></script>
+	<script src="../../system/Cursor.js"></script>
+	<script src="../../system/Button.js"></script>
+	<script src="menuUI.js"></script>
 	<script src="hud.js"></script>
+	<script src="player.js"></script>
+	<script src="ai.js"></script>
+	<script src="ball.js"></script>
+	<script src="gameBoard.js"></script>
 	<script src="../../JinxEngine.js"></script>
 	<script src="main.js"></script>
 </head>
 <body>
-	<h1>Effects Demo</h1>
+	<h1>Tic Tac Toe Example</h1>
 	<nav>
-		<button id="newFireButton">Start</button>
+		<button id="newGameButton">New Game</button>
 		<button id="PauseButton">Pause</button>
 		<button id="quitButton">Quit</button>
 	</nav>
-	<canvas id="screen" width=800 height=400>
+	<canvas id="screen"  height="400" width="800">
 		<p>your browser will not support canvas, upgrade your browser.</p>
 	</canvas>
 </body>
