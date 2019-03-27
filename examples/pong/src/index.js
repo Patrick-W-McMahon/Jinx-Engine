@@ -1,15 +1,21 @@
-// import Jinx, { Display, Scene } from '../../../dist/jinx';
-import GameScene from './gameScene';
+import Jinx, { Display, Scene, Engine } from '../../../dist/jinx';
+import GameScene from './GameScene';
 
 console.log("pong");
-// const myEngine = new Jinx();
+new Jinx.Engine({
+	scenes: [
+		{ name: 'game', scene: new GameScene() }
+	],
+	activeScene: 'game'
+});
 
-class Game {
-	constructor() {
-		// myEngine.registerScene('game', new GameScene() );
-	}
+// class Game {
+// 	constructor() {
+// 		myEngine.registerScene('game', new GameScene() );
+// 	}
 
-}
+// }
+// new Game();
 
 /*
 var myDom = new DOM();

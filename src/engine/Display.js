@@ -1,5 +1,5 @@
 
-class Display {
+export default class Display {
     constructor(props) {
         this.state = {
             displayElm: null,
@@ -73,5 +73,3 @@ class Display {
     }
 
 }
-
-export default Display;

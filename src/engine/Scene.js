@@ -1,12 +1,7 @@
 
 
-class Scene {
-    constructor(props) {}
-
-    get components() {}
-
-    registerObjects() {}
-
+export default class Scene {
+    constructor() {}
+    // getComponents() {}
+    // registerObjects() {}
 }
-
-export default Scene;

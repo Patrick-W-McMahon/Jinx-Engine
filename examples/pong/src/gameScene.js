@@ -1,14 +1,12 @@
-import Jinx, { Scene } from '../../../dist/jinx';
-import HUD from './Hud';
+// import { Scene } from '../../../dist/jinx';
+import Hud from './Hud';
 
-class GameScene extends Scene {
-    constructor(props) {
-        super(props);
+export default class GameScene {
+    constructor() {
+        this.components = this.components.bind(this);
     }
 
     components() {
-        return [
-            new HUD()
-        ]
+        return [ Hud ]
     }
 }

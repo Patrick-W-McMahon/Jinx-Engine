@@ -9,5 +9,5 @@ export {
     Display
 };
 
-const Jinx = Engine;
+const Jinx = new Engine;
 export default Jinx;
