@@ -1,0 +1,40 @@
+{
+  "name": "jinx-engine",
+  "version": "1.0.0",
+  "description": "JavaScript Game engine an Visual Rendering Engine",
+  "main": "JinxEngine.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Patrick-W-McMahon/Jinx-Engine.git"
+  },
+  "keywords": [
+    "Game",
+    "Engine"
+  ],
+  "author": "Patrick W. McMahon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Patrick-W-McMahon/Jinx-Engine/issues"
+  },
+  "homepage": "https://github.com/Patrick-W-McMahon/Jinx-Engine#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  },
+  "dependencies": {
+    "box2d": "^1.0.0"
+  }
+}

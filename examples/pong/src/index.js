@@ -1,3 +1,17 @@
+// import Jinx, { Display, Scene } from '../../../dist/jinx';
+import GameScene from './gameScene';
+
+console.log("pong");
+// const myEngine = new Jinx();
+
+class Game {
+	constructor() {
+		// myEngine.registerScene('game', new GameScene() );
+	}
+
+}
+
+/*
 var myDom = new DOM();
 var myEngine = new GameEngine();
 myEngine.engineMode="live";
@@ -27,3 +41,4 @@ myDom.OnReady(function(){
 		myEngine.stop();
 	}, false);
 });
+*/

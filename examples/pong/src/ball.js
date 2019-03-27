@@ -1,24 +1,23 @@
-function Ball(){
-	var gameEngine;
-	this.radius=8;
-	var x;
-	var y;
-	var direction;
-	var speed=1;
-	
-	
-	this.init = function(e){
-		this.gameEngine = e;
+class Ball {
+	constructor(props) {
+		super(props);
+		this.state = {
+			radius: 8,
+			x: props.x,
+			y: props.y,
+			direction: props.direction,
+			speed: props.speed
+		};
 		this.resetBall();
 	}
 	
-	this.resetBall = function(){
-		this.x = this.gameEngine.getDisplay("widthCenter");
-		this.y = this.gameEngine.getDisplay("heightCenter"); 
-		this.direction = Math.randomNumberRange(0,360);
+	resetBall() {
+		// this.state.x = this.gameEngine.getDisplay("widthCenter");
+		// this.state.y = this.gameEngine.getDisplay("heightCenter"); 
+		// this.state.direction = Math.randomNumberRange(0,360);
 	}
 	
-	this.getAngle = function(pt3, pt2, pt1) {
+	getAngle(pt3, pt2, pt1) {
 		var dx1 = pt1.x - pt2.x;
 		var dy1 = pt1.y - pt2.y;
 		var dx2 = pt3.x - pt2.x;
@@ -28,7 +27,7 @@ function Ball(){
 		return parseInt((a2 - a1) * 180 / Math.PI + 360) % 360;
 	}
 	
-	this.update = function(){
+	update() {
 		if(this.gameEngine.frameCount>100){
 			var oldX=this.x;
 			var oldY=this.y;
@@ -78,14 +77,14 @@ function Ball(){
 			}
 		}
 		
-
 	}
 	
-	this.draw = function(g){
+	render() {
+		const { g } = this.props;
+		const { x, y, radius } = this.state;
 		g.fillStyle = "black";
-		//g.fillRect(this.x,this.y,this.radius*2,this.radius*2);
 		g.beginPath();
-		g.arc(this.x,this.y,this.radius,0,2*Math.PI);
+		g.arc(x, y, radius, 0, 2 * Math.PI);
 		g.fill();
 	}
 }
